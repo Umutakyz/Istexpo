@@ -7,8 +7,8 @@
         <div class="stat-value">{{ $fairCount }}</div>
     </div>
     <div class="stat-card">
-        <div class="stat-label">Aktif Sektör</div>
-        <div class="stat-value">{{ $sectorCount }}</div>
+        <div class="stat-label">Temsilcilikler</div>
+        <div class="stat-value">{{ $representationCount }}</div>
     </div>
     <div class="stat-card">
         <div class="stat-label">Mesajlar</div>
@@ -29,7 +29,6 @@
         <thead>
             <tr>
                 <th>Etkinlik Adı</th>
-                <th>Sektör</th>
                 <th>Tarih</th>
                 <th>Durum</th>
                 <th>İşlem</th>
@@ -39,7 +38,6 @@
             @forelse($recentFairs as $fair)
             <tr>
                 <td>{{ $fair->name }}</td>
-                <td>{{ $fair->sector->name }}</td>
                 <td>{{ $fair->start_date->format('d.m.Y') }}</td>
                 <td><span class="badge badge-success">Gelecek</span></td>
                 <td><a href="{{ route('admin.fairs.edit', $fair) }}" style="color: var(--admin-accent);">Düzenle</a></td>
