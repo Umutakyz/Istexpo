@@ -254,12 +254,15 @@
             </ul>
 
             <div class="nav-actions">
-                <div class="search-container" style="position: relative; display: flex; align-items: center; justify-content: flex-end;">
-                    <form action="{{ route('search') }}" method="GET" id="searchForm" style="display: flex; align-items: center; background: #fff; border-radius: 100px; padding: 4px 4px 4px 20px; border: 1px solid var(--line); margin-right: 12px; width: 0; opacity: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); visibility: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.08);">
-                        <input type="text" name="q" placeholder="{{ __('Search...') }}" style="border: none; background: transparent; outline: none; font-size: 14px; width: 220px; font-family: inherit; color: var(--ink); font-weight: 500;">
-                        <button type="submit" style="background: var(--brand); color: #fff; border: none; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; flex-shrink: 0;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </button>
+                <div class="search-container" style="display: flex; align-items: center;">
+                    <form action="{{ route('search') }}" method="GET" id="searchForm" style="position: absolute; inset: 0; background: #fff; display: flex; align-items: center; padding: 0 32px; width: 100%; opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 100;">
+                        <div style="max-width: 1500px; margin: 0 auto; width: 100%; display: flex; align-items: center; gap: 20px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            <input type="text" name="q" id="searchInput" placeholder="{{ __('Type to search...') }}" style="flex: 1; border: none; background: transparent; outline: none; font-size: 24px; font-family: inherit; color: var(--ink); font-weight: 500; padding: 20px 0;">
+                            <button type="button" id="searchClose" style="background: transparent; border: none; color: var(--ink); cursor: pointer; padding: 10px; display: grid; place-items: center; transition: 0.3s; opacity: 0.6;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </button>
+                        </div>
                     </form>
                     <button class="search-btn" id="searchTrigger" style="flex-shrink: 0; width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: transparent; cursor: pointer; transition: 0.3s;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -308,9 +311,6 @@
                 <div class="footer-social">
                     <h4>{{ __('SOSYAL MEDYA') }}</h4>
                     <div class="footer-social-icons">
-                        <a href="{{ \App\Models\Setting::get('social_facebook') }}" target="_blank">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                        </a>
                         <a href="{{ \App\Models\Setting::get('social_instagram') }}" target="_blank">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                         </a>
@@ -349,7 +349,6 @@
                 <p>© {{ date('Y') }} | ISTEXPO FUARCILIK HİZMETLERİ LTD. ŞTİ.</p>
                 <div class="footer-bottom-links">
                     <a href="{{ route('kvkk') }}">{{ __('KVKK AYDINLATMA METNİ') }}</a>
-                    <a href="#">PROTEKA CREATIVE</a>
                 </div>
                 <a href="#" class="back-to-top">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
@@ -361,38 +360,34 @@
         document.addEventListener('DOMContentLoaded', function() {
             const searchTrigger = document.getElementById('searchTrigger');
             const searchForm = document.getElementById('searchForm');
-            const searchInput = searchForm ? searchForm.querySelector('input') : null;
+            const searchInput = document.getElementById('searchInput');
+            const searchClose = document.getElementById('searchClose');
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const navMenu = document.querySelector('.nav-menu');
 
             if (searchTrigger && searchForm) {
-                searchTrigger.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (searchForm.style.visibility === 'hidden' || searchForm.style.visibility === '') {
-                        searchForm.style.width = '260px';
-                        searchForm.style.opacity = '1';
-                        searchForm.style.visibility = 'visible';
-                        searchForm.style.marginRight = '15px';
-                        setTimeout(() => searchInput.focus(), 400);
-                    } else {
-                        searchForm.style.width = '0';
-                        searchForm.style.opacity = '0';
-                        searchForm.style.marginRight = '10px';
-                        setTimeout(() => {
-                            searchForm.style.visibility = 'hidden';
-                        }, 400);
-                    }
+                searchTrigger.addEventListener('click', function() {
+                    searchForm.style.visibility = 'visible';
+                    searchForm.style.opacity = '1';
+                    setTimeout(() => searchInput.focus(), 300);
                 });
 
-                // Tıklanan yer dışındaysa kapat
-                document.addEventListener('click', function(e) {
-                    if (!searchForm.contains(e.target) && e.target !== searchTrigger && !searchTrigger.contains(e.target)) {
-                        searchForm.style.width = '0';
+                if (searchClose) {
+                    searchClose.addEventListener('click', function() {
                         searchForm.style.opacity = '0';
-                        searchForm.style.marginRight = '10px';
                         setTimeout(() => {
                             searchForm.style.visibility = 'hidden';
-                        }, 400);
+                        }, 300);
+                    });
+                }
+
+                // Close on ESC
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        searchForm.style.opacity = '0';
+                        setTimeout(() => {
+                            searchForm.style.visibility = 'hidden';
+                        }, 300);
                     }
                 });
             }

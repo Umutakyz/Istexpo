@@ -19,6 +19,22 @@
             </div>
 
             <div>
+                <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Haber Videoları (Çoklu Seçilebilir)</label>
+                @if($news->videos)
+                    <div style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
+                        @foreach($news->videos as $video)
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--admin-text-muted); background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--admin-border);">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                                <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ basename($video) }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+                <input type="file" name="videos[]" multiple style="width: 100%; background: #0d1117; border: 1px solid var(--admin-border); padding: 12px 16px; border-radius: 12px; color: #fff; font-family: inherit; outline: none;">
+                <small style="display: block; color: var(--admin-text-muted); margin-top: 4px;">Yeni video seçerseniz eskiler silinecektir. Birden fazla seçebilirsiniz.</small>
+            </div>
+
+            <div>
                 <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Haber Başlığı</label>
                 <input type="text" name="title" value="{{ $news->title }}" required style="width: 100%; background: #0d1117; border: 1px solid var(--admin-border); padding: 12px 16px; border-radius: 12px; color: #fff; font-family: inherit; outline: none;">
             </div>

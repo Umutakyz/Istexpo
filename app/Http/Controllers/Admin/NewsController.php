@@ -26,6 +26,7 @@ class NewsController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'videos.*' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000',
             'summary' => 'nullable|string',
             'content' => 'required|string',
             'is_active' => 'boolean',
@@ -37,6 +38,14 @@ class NewsController extends Controller
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('news', 'public');
+        }
+
+        if ($request->hasFile('videos')) {
+            $videoPaths = [];
+            foreach ($request->file('videos') as $video) {
+                $videoPaths[] = $video->store('news/videos', 'public');
+            }
+            $data['videos'] = $videoPaths;
         }
 
         News::create($data);
@@ -54,6 +63,7 @@ class NewsController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'videos.*' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000',
             'summary' => 'nullable|string',
             'content' => 'required|string',
             'is_active' => 'boolean',
@@ -68,6 +78,20 @@ class NewsController extends Controller
             $data['image'] = $request->file('image')->store('news', 'public');
         }
 
+        if ($request->hasFile('videos')) {
+            // Delete old videos
+            if ($news->videos) {
+                foreach ($news->videos as $oldVideo) {
+                    Storage::disk('public')->delete($oldVideo);
+                }
+            }
+            $videoPaths = [];
+            foreach ($request->file('videos') as $video) {
+                $videoPaths[] = $video->store('news/videos', 'public');
+            }
+            $data['videos'] = $videoPaths;
+        }
+
         $news->update($data);
 
         return redirect()->route('admin.news.index')->with('success', 'Haber başarıyla güncellendi.');
@@ -76,6 +100,11 @@ class NewsController extends Controller
     public function destroy(News $news)
     {
         if ($news->image) Storage::disk('public')->delete($news->image);
+        if ($news->videos) {
+            foreach ($news->videos as $video) {
+                Storage::disk('public')->delete($video);
+            }
+        }
         $news->delete();
         return redirect()->route('admin.news.index')->with('success', 'Haber başarıyla silindi.');
     }

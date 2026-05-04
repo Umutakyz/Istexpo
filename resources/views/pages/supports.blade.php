@@ -3,7 +3,7 @@
 @section('title', __('Supports') . ' — ISTexpo')
 
 @section('content')
-<section class="page-header" style="background: linear-gradient(rgba(0,43,73,0.85), rgba(0,43,73,0.85)), url('/img/cover-images/cover-main.png') center/cover; color: #fff; padding: 120px 0 80px;">
+<section class="page-header" style="background: linear-gradient(rgba(0,43,73,0.85), rgba(0,43,73,0.85)), url('/img/cover-images/cover-main.png') center/cover; color: #fff; ">
     <div class="wrap">
         <div class="eyebrow" style="color: var(--yellow); border-color: var(--yellow);">{{ __('Financial Aid') }}</div>
         <h1 class="page-title">{{ __('Government') }} <span class="script" style="color: var(--yellow);">{{ __('Incentives') }}</span></h1>
@@ -24,7 +24,7 @@
                 </p>
                 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                     <a href="https://www.ticaret.gov.tr" target="_blank" class="btn btn-secondary" style="background: transparent; border: 2px solid var(--brand); color: var(--brand); font-weight: 600; padding: 12px 24px;">{{ __('www.ticaret.gov.tr') }}</a>
-                    <a href="https://ticaret.gov.tr/destekler/ihracat-destekleri/teblig-karar-yurutulmesine-dair-genelgeler/yurt-disinda-gerceklestirilen-fuar-katilimlarinin-desteklenmesine-iliskin-2017-4" target="_blank" class="btn btn-primary" style="font-weight: 600; padding: 12px 24px; background: var(--brand); color: #fff;">{{ __('Mevzuat için Tıklayın') }}</a>
+                    <a href="https://www.ticaret.gov.tr/ihracat/fuarlar/fuarlar-mevzuatı" target="_blank" class="btn btn-primary" style="font-weight: 600; padding: 12px 24px; background: var(--brand); color: #fff;">{{ __('Mevzuat için Tıklayın') }}</a>
                 </div>
             </div>
             

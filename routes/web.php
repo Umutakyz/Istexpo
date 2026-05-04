@@ -38,6 +38,8 @@ use App\Http\Controllers\Admin\RepresentationController;
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('fairs/featured', [FairController::class, 'featured'])->name('fairs.featured');
+    Route::post('fairs/{fair}/unfeature', [FairController::class, 'unfeature'])->name('fairs.unfeature');
     Route::resource('fairs', FairController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('representations', RepresentationController::class);

@@ -3,7 +3,7 @@
 @section('title', __('Our Services') . ' — ISTexpo')
 
 @section('content')
-<section class="page-header" style="background: var(--bg-2); padding: 120px 0 80px;">
+<section class="page-header" style="background: var(--bg-2); ">
     <div class="wrap">
         <div class="eyebrow">{{ __('Services') }}</div>
         <h1 class="page-title">{{ __('Excellence in') }} <span class="script" style="color: var(--brand);">{{ __('Execution') }}</span></h1>

@@ -16,6 +16,18 @@ class FairController extends Controller
         return view('admin.fairs.index', compact('fairs'));
     }
 
+    public function featured()
+    {
+        $fairs = Fair::where('is_featured', true)->orderBy('start_date', 'asc')->paginate(10);
+        return view('admin.fairs.featured', compact('fairs'));
+    }
+
+    public function unfeature(Fair $fair)
+    {
+        $fair->update(['is_featured' => false]);
+        return back()->with('success', 'Fuar başarıyla anasayfadan kaldırıldı.');
+    }
+
     public function create()
     {
         return view('admin.fairs.create');
@@ -25,7 +37,6 @@ class FairController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'sector_id' => 'nullable|exists:sectors,id',
             'type' => 'required|in:international,past',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
@@ -44,6 +55,7 @@ class FairController extends Controller
 
         $data = $request->all();
         $data['slug'] = Str::slug($request->name);
+        $data['is_featured'] = $request->has('is_featured');
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('fairs', 'public');
@@ -89,6 +101,7 @@ class FairController extends Controller
 
         $data = $request->all();
         $data['slug'] = Str::slug($request->name);
+        $data['is_featured'] = $request->has('is_featured');
 
         if ($request->hasFile('image')) {
             if ($fair->image) Storage::disk('public')->delete($fair->image);

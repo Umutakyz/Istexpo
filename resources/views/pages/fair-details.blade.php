@@ -22,17 +22,25 @@
                 @endif
                 
                 <p style="font-size: 15px; color: var(--ink); font-weight: 500;">
-                    {{ $fair->start_date->format('d') }} - {{ $fair->end_date->format('d M Y') }}
+                    @if($fair->start_date->format('m') === $fair->end_date->format('m'))
+                        {{ $fair->start_date->format('d') }} - {{ $fair->end_date->format('d') }} {{ __($fair->end_date->format('M')) }} {{ $fair->end_date->format('Y') }}
+                    @else
+                        {{ $fair->start_date->format('d') }} {{ __($fair->start_date->format('M')) }} - {{ $fair->end_date->format('d') }} {{ __($fair->end_date->format('M')) }} {{ $fair->end_date->format('Y') }}
+                    @endif
                 </p>
             </div>
 
-            {{-- Middle Part: Cover Image --}}
-            <div style="flex: 1.5; min-width: 300px; background: #fff; position: relative;">
-                @if($fair->image)
+            {{-- Middle Part: Cover Image or Video --}}
+            <div style="flex: 1.5; min-width: 300px; min-height: 280px; background: #000; position: relative;">
+                @if($fair->video)
+                    <video controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; display: block;">
+                        <source src="{{ asset('storage/' . $fair->video) }}" type="video/mp4">
+                    </video>
+                @elseif($fair->image)
                     <img src="{{ asset('storage/' . $fair->image) }}" alt="{{ $fair->name }}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;">
                 @else
                     <div style="width: 100%; height: 100%; background: var(--line); display: grid; place-items: center;">
-                        <span style="color: var(--muted);">No Image</span>
+                        <span style="color: var(--muted);">{{ __('No Image') }}</span>
                     </div>
                 @endif
             </div>
@@ -48,7 +56,12 @@
                     @endif
                     <li style="position: relative; padding-left: 16px; margin-bottom: 8px;">
                         <span style="position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--ink); border-radius: 50%;"></span>
-                        <strong>{{ __('Date:') }}</strong> {{ $fair->start_date->format('d') }} - {{ $fair->end_date->format('d M Y') }}
+                        <strong>{{ __('Date:') }}</strong> 
+                        @if($fair->start_date->format('m') === $fair->end_date->format('m'))
+                            {{ $fair->start_date->format('d') }} - {{ $fair->end_date->format('d') }} {{ __($fair->end_date->format('M')) }} {{ $fair->end_date->format('Y') }}
+                        @else
+                            {{ $fair->start_date->format('d') }} {{ __($fair->start_date->format('M')) }} - {{ $fair->end_date->format('d') }} {{ __($fair->end_date->format('M')) }} {{ $fair->end_date->format('Y') }}
+                        @endif
                     </li>
                     <li style="position: relative; padding-left: 16px; margin-bottom: 8px;">
                         <span style="position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--ink); border-radius: 50%;"></span>

@@ -13,6 +13,12 @@
             </div>
 
             <div>
+                <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Haber Videoları (Çoklu Seçilebilir)</label>
+                <input type="file" name="videos[]" multiple style="width: 100%; background: #0d1117; border: 1px solid var(--admin-border); padding: 12px 16px; border-radius: 12px; color: #fff; font-family: inherit; outline: none;">
+                <small style="display: block; color: var(--admin-text-muted); margin-top: 4px;">Birden fazla video seçebilirsiniz (mp4, mov, vb.)</small>
+            </div>
+
+            <div>
                 <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Haber Başlığı</label>
                 <input type="text" name="title" required style="width: 100%; background: #0d1117; border: 1px solid var(--admin-border); padding: 12px 16px; border-radius: 12px; color: #fff; font-family: inherit; outline: none;">
             </div>

@@ -3,7 +3,7 @@
 @section('title', __('Contact Us') . ' — ISTexpo')
 
 @section('content')
-<section class="page-header" style="background: linear-gradient(rgba(0,43,73,0.85), rgba(0,43,73,0.85)), url('/img/cover-images/cover-main.png') center/cover; color: #fff; padding: 120px 0 80px;">
+<section class="page-header" style="background: linear-gradient(rgba(0,43,73,0.85), rgba(0,43,73,0.85)), url('/img/cover-images/cover-main.png') center/cover; color: #fff; ">
     <div class="wrap">
         <div class="eyebrow" style="color: var(--yellow); border-color: var(--yellow);">{{ __('Connect') }}</div>
         <h1 class="page-title">
@@ -106,7 +106,7 @@
 @if($mapEmbed)
 <section style="padding: 0 0 100px;">
     <div class="wrap">
-        <div style="border-radius: 28px; overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow-soft); aspect-ratio: 16/5; min-height: 380px;">
+        <div class="map-wrapper">
             <iframe
                 src="{{ $mapEmbed }}"
                 width="100%"

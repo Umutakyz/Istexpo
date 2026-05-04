@@ -3,7 +3,7 @@
 @section('title', __('About Us') . ' — ISTexpo')
 
 @section('content')
-<section class="page-header" style="background: linear-gradient(rgba(0,43,73,0.85), rgba(0,43,73,0.85)), url('/img/cover-images/cover-main.png') center/cover; color: #fff; padding: 120px 0 80px;">
+<section class="page-header" style="background: linear-gradient(rgba(0,43,73,0.85), rgba(0,43,73,0.85)), url('/img/cover-images/cover-main.png') center/cover; color: #fff; ">
     <div class="wrap">
         <div class="eyebrow" style="color: var(--yellow); border-color: var(--yellow);">{{ __('Our Story') }}</div>
         <h1 class="page-title">{{ __('Legacy of') }} <span class="script" style="color: var(--yellow);">{{ __('Excellence') }}</span></h1>

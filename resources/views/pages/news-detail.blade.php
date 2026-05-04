@@ -18,7 +18,7 @@
         </h1>
         <div style="font-size: 14px; color: rgba(255,255,255,0.6); display: flex; align-items: center; gap: 8px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            {{ $item->created_at->format('d M Y') }}
+            {{ $item->created_at->format('d') }} {{ __($item->created_at->format('M')) }} {{ $item->created_at->format('Y') }}
         </div>
     </div>
 </section>
@@ -50,6 +50,22 @@
                         {!! $item->content_loc !!}
                     @else
                         <p style="color: var(--muted);">{{ __('Content not available.') }}</p>
+                    @endif
+
+                    @if($item->videos && count($item->videos) > 0)
+                        <div style="margin-top: 50px;">
+                            <h3 style="font-size: 24px; font-weight: 800; color: var(--ink); margin-bottom: 24px;">{{ __('News Videos') }}</h3>
+                            <div style="display: grid; grid-template-columns: 1fr; gap: 24px;">
+                                @foreach($item->videos as $video)
+                                    <div style="border-radius: 16px; overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                                        <video controls playsinline webkit-playsinline preload="metadata" style="width: 100%; display: block; aspect-ratio: 16/9;">
+                                            <source src="{{ asset('storage/' . $video) }}" type="video/mp4">
+                                            {{ __('Your browser does not support the video tag.') }}
+                                        </video>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     @endif
                 </div>
 
@@ -93,7 +109,7 @@
                             </div>
                         @endif
                         <div style="font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">
-                            {{ $rel->created_at->format('d M Y') }}
+                            {{ $rel->created_at->format('d') }} {{ __($rel->created_at->format('M')) }} {{ $rel->created_at->format('Y') }}
                         </div>
                         <div style="font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; transition: color 0.2s;"
                              onmouseover="this.style.color='var(--brand)'" onmouseout="this.style.color='var(--ink)'">

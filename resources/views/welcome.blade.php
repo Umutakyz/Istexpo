@@ -4,11 +4,9 @@
 <!-- Hero Section -->
 <section class="hero">
     <div class="hero-bg">
-        <video autoplay loop muted playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
-            <source src="https://www.istexpo.com/cdn/videos/shutterstock_v16143700.m4v" type="video/mp4">
+        <video autoplay loop muted playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
             <source src="https://www.istexpo.com/cdn/videos/shutterstock_v16143700.mp4" type="video/mp4">
             <source src="https://www.istexpo.com/cdn/videos/shutterstock_v16143700.webm" type="video/webm">
-            <source src="https://www.istexpo.com/cdn/videos/shutterstock_v16143700.ogg" type="video/ogg">
         </video>
     </div>
     
@@ -20,7 +18,7 @@
         
         <h1>
             {!! __('Connecting you with the :right :connections', [
-                'right' => '<span class="script" style="color: var(--brand);">' . __('Right') . '</span>',
+                'right' => '<span class="script" style="color: var(--yellow);">' . __('Right') . '</span>',
                 'connections' => '<br><span class="strong">' . __('Connections Globally') . '</span>'
             ]) !!}
         </h1>
@@ -68,12 +66,16 @@
         
         <div class="grid-3">
             @php
-                $upcomingFairs = \App\Models\Fair::where('start_date', '>=', now())->limit(3)->get();
+                $upcomingFairs = \App\Models\Fair::where('is_featured', true)->orderBy('start_date', 'asc')->get();
             @endphp
             @foreach($upcomingFairs as $fair)
             <div class="card">
-                <div class="card-img">
-                    @if($fair->image)
+                <div class="card-img" style="position: relative; overflow: hidden;">
+                    @if($fair->video)
+                        <video autoplay muted loop playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 250px; object-fit: cover; display: block;">
+                            <source src="{{ asset('storage/' . $fair->video) }}" type="video/mp4">
+                        </video>
+                    @elseif($fair->image)
                         <img src="{{ asset('storage/' . $fair->image) }}" alt="{{ $fair->name }}" style="width: 100%; height: 250px; object-fit: cover;">
                     @else
                         <svg viewBox="0 0 400 250" fill="#f0ede8"><rect width="400" height="250" fill="var(--brand)" fill-opacity="0.05"/><text x="50%" y="50%" text-anchor="middle" fill="var(--brand)" font-size="14" font-weight="700">{{ __('EVENT IMAGE') }}</text></svg>
@@ -82,11 +84,37 @@
                 <div class="card-body">
                     <h3 class="card-title">{{ $fair->name_loc }}</h3>
                     <p class="card-text">{{ Str::limit(strip_tags($fair->description_loc), 100) }}</p>
-                    <a href="{{ route('fairs.show', $fair->slug) }}" class="card-link">{{ __('View Event Details') }}</a>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--line); margin-top: 20px;">
+                        <div style="font-weight: 800; font-size: 12px; color: var(--muted);">
+                            @if($fair->start_date->format('m') === $fair->end_date->format('m'))
+                                {{ $fair->start_date->format('d') }}-{{ $fair->end_date->format('d') }} {{ __($fair->start_date->format('M')) }}
+                            @else
+                                {{ $fair->start_date->format('d') }} {{ __($fair->start_date->format('M')) }} - {{ $fair->end_date->format('d') }} {{ __($fair->end_date->format('M')) }}
+                            @endif
+                        </div>
+                        <a href="{{ route('fairs.show', $fair->slug) }}" class="card-link" style="margin: 0;">{{ __('View Event Details') }}</a>
+                    </div>
                 </div>
             </div>
             @endforeach
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var videos = document.querySelectorAll('.grid-3 video[autoplay]');
+                videos.forEach(function(v) {
+                    v.muted = true;
+                    var p = v.play();
+                    if (p !== undefined) {
+                        p.catch(function() {
+                            document.addEventListener('touchstart', function() {
+                                v.play();
+                            }, { once: true });
+                        });
+                    }
+                });
+            });
+        </script>
     </div>
 </section>
 
@@ -111,7 +139,7 @@
                 </p>
                 <div style="display: flex; gap: 24px;">
                     <a href="{{ route('about') }}" class="btn btn-primary">{{ __('Read Our Story') }}</a>
-                    <a href="{{ route('contact') }}" class="btn btn-secondary">{{ __('Contact Us') }}</a>
+                    <a href="{{ route('contact') }}" class="btn btn-outline">{{ __('Contact Us') }}</a>
                 </div>
             </div>
         </div>
@@ -136,11 +164,11 @@
             </div>
         </div>
         
-        <div id="partnerTrack" style="display: flex; gap: 80px; overflow-x: auto; scroll-behavior: smooth; padding: 40px 0; scrollbar-width: none; -ms-overflow-style: none; align-items: center;">
+        <div id="partnerTrack" style="display: flex; gap: 60px; overflow-x: auto; scroll-behavior: smooth; padding: 40px 0; scrollbar-width: none; -ms-overflow-style: none; align-items: center;">
             @foreach($representations as $representation)
             <div class="partner-logo" style="flex: 0 0 auto; filter: grayscale(1); opacity: 0.7; transition: 0.4s; cursor: pointer; display: grid; place-items: center;" title="{{ $representation->name }}">
                 @if($representation->logo)
-                    <img src="{{ asset('storage/' . $representation->logo) }}" alt="{{ $representation->name }}" style="max-height: 100px; max-width: 220px; width: auto; object-fit: contain;">
+                    <img src="{{ asset('storage/' . $representation->logo) }}" alt="{{ $representation->name }}" class="partner-img">
                 @else
                     <span style="font-weight: 800; color: var(--brand); font-size: 28px;">{{ $representation->name }}</span>
                 @endif
@@ -207,6 +235,17 @@
             }
             #partnerTrack::-webkit-scrollbar { display: none; }
             .partner-logo:hover { filter: grayscale(0) !important; opacity: 1 !important; transform: translateY(-5px); }
+            
+            .partner-img {
+                max-height: 160px;
+                max-width: 300px;
+                width: auto;
+                object-fit: contain;
+            }
+            @media (max-width: 768px) {
+                #partnerTrack { gap: 40px !important; }
+                .partner-img { max-height: 80px; max-width: 150px; }
+            }
         </style>
     </div>
 </section>
@@ -256,7 +295,7 @@
             
 
             <div class="eyebrow" style="color: var(--yellow); border-color: var(--yellow); justify-content: center; margin-bottom: 40px;">{{ __('Partner with Us') }}</div>
-            <h2 class="section-title" style="color: #fff; margin-bottom: 40px;">{{ __('Ready to') }} <em>{{ __('Transform') }}</em> {{ __('Your Global Reach?') }}</h2>
+            <h2 class="section-title" style="color: #fff; margin-bottom: 40px;">{{ __('Ready to') }} <em style="color: var(--yellow);">{{ __('Transform') }}</em> {{ __('Your Global Reach?') }}</h2>
             <p style="font-size: 20px; color: rgba(255,255,255,0.8); max-width: 700px; margin: 0 auto 60px;">{{ __('Join hundreds of industry leaders who trust ISTexpo to deliver exceptional results and strategic growth opportunities.') }}</p>
             <a href="{{ route('contact') }}" class="btn btn-primary" style="padding: 24px 60px; font-size: 18px;">{{ __('Get a Proposal') }}</a>
         </div>

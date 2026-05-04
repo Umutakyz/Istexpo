@@ -3,7 +3,7 @@
 @section('title', __('News') . ' — ISTexpo')
 
 @section('content')
-<section class="page-header" style="background: linear-gradient(rgba(0,43,73,0.85), rgba(0,43,73,0.85)), url('/img/cover-images/cover-main.png') center/cover; color: #fff; padding: 120px 0 80px;">
+<section class="page-header" style="background: linear-gradient(rgba(0,43,73,0.85), rgba(0,43,73,0.85)), url('/img/cover-images/cover-main.png') center/cover; color: #fff; ">
     <div class="wrap">
         <div class="eyebrow" style="color: var(--yellow); border-color: var(--yellow);">{{ __('Media Center') }}</div>
         <h1 class="page-title">{{ __('Latest') }} <span class="script" style="color: var(--yellow);">{{ __('News') }}</span></h1>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="card-body">
                     <div style="font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
-                        {{ $item->created_at->format('d M Y') }}
+                        {{ $item->created_at->format('d') }} {{ __($item->created_at->format('M')) }} {{ $item->created_at->format('Y') }}
                     </div>
                     <h3 class="card-title" style="font-size: 18px; line-height: 1.4;">{{ $item->title_loc }}</h3>
                     <p class="card-text">{{ Str::limit($item->summary_loc ?: strip_tags($item->content_loc), 120) }}</p>

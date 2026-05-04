@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class News extends Model
 {
     protected $fillable = [
-        'title', 'slug', 'image', 'summary', 'content', 'is_active',
+        'title', 'slug', 'image', 'videos', 'summary', 'content', 'is_active',
         'title_en', 'summary_en', 'content_en'
     ];
 
@@ -49,5 +49,6 @@ class News extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'videos' => 'array',
     ];
 }

@@ -3,7 +3,7 @@
 @section('title', __('Search Results') . ' — ISTexpo')
 
 @section('content')
-<section class="page-header" style="background: linear-gradient(rgba(0,43,73,0.85), rgba(0,43,73,0.85)), url('/img/cover-images/cover-main.png') center/cover; color: #fff; padding: 120px 0 80px;">
+<section class="page-header" style="background: linear-gradient(rgba(0,43,73,0.85), rgba(0,43,73,0.85)), url('/img/cover-images/cover-main.png') center/cover; color: #fff; ">
     <div class="wrap">
         <div class="eyebrow" style="color: var(--yellow); border-color: var(--yellow);">{{ __('Search Results') }}</div>
         <h1 style="font-size: clamp(32px, 5vw, 64px); line-height: 1.1; letter-spacing: -0.04em; margin-bottom: 24px;">

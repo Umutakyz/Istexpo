@@ -8,6 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    {{-- Flatpickr --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/tr.js"></script>
     <style>
         :root {
             --admin-bg: #001829;             /* Derin lacivert arka plan */
@@ -168,6 +174,32 @@
         }
         .btn-primary { background: var(--admin-accent); color: var(--admin-navy); }
         .btn-primary:hover { background: var(--admin-accent-hover); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(243,146,0,0.3); }
+
+        .admin-input {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid var(--admin-border);
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .admin-input:focus { border-color: var(--admin-accent); }
+
+        /* Flatpickr Custom Styles */
+        .flatpickr-input.form-control {
+            background: #0d1117 !important;
+            border: 1px solid var(--admin-border) !important;
+            color: #fff !important;
+            cursor: pointer;
+        }
+        .flatpickr-calendar {
+            background: #0d1117 !important;
+            border: 1px solid var(--admin-border) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+        }
     </style>
 </head>
 <body>
@@ -178,7 +210,8 @@
         <nav>
             <ul>
                 <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Panel</a></li>
-                <li><a href="{{ route('admin.fairs.index') }}" class="{{ request()->routeIs('admin.fairs.*') ? 'active' : '' }}">Fuarlar</a></li>
+                <li><a href="{{ route('admin.fairs.index') }}" class="{{ request()->routeIs('admin.fairs.index', 'admin.fairs.create', 'admin.fairs.edit') ? 'active' : '' }}">Fuarlar</a></li>
+                <li><a href="{{ route('admin.fairs.featured') }}" class="{{ request()->routeIs('admin.fairs.featured') ? 'active' : '' }}">— Öne Çıkanlar</a></li>
                 <li><a href="{{ route('admin.services.index') }}" class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}">Hizmetler</a></li>
                 <li><a href="{{ route('admin.representations.index') }}" class="{{ request()->routeIs('admin.representations.*') ? 'active' : '' }}">Temsilcilikler</a></li>
                 <li><a href="{{ route('admin.inbox.index') }}" class="{{ request()->routeIs('admin.inbox.*') ? 'active' : '' }}">Gelen Kutusu</a></li>
@@ -207,5 +240,18 @@
 
         @yield('content')
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr('input[type="date"]', {
+                locale: 'tr',
+                dateFormat: 'Y-m-d',
+                allowInput: true,
+                altInput: true,
+                altFormat: 'j F Y',
+                altInputClass: 'admin-input',
+                disableMobile: "true"
+            });
+        });
+    </script>
 </body>
 </html>
