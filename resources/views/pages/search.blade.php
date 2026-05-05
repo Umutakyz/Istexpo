@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="card-body">
                                     <h3 class="card-title">{{ $fair->name_loc }}</h3>
-                                    <p class="card-text">{{ Str::limit($fair->description_loc, 100) }}</p>
+                                    <p class="card-text">{{ Str::limit(html_entity_decode(strip_tags($fair->description_loc)), 100) }}</p>
                                     <a href="{{ route('fairs.show', $fair->slug) }}" class="card-link">{{ __('Details') }}</a>
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h3 class="card-title">{{ $service->name_loc }}</h3>
-                                    <p class="card-text">{{ Str::limit($service->description_loc, 100) }}</p>
+                                    <p class="card-text">{{ Str::limit(html_entity_decode(strip_tags($service->description_loc)), 100) }}</p>
                                     <a href="{{ route('services') }}" class="card-link">{{ __('Learn More') }}</a>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="card-body">
                                     <h3 class="card-title">{{ $item->title_loc }}</h3>
-                                    <p class="card-text">{{ Str::limit(strip_tags($item->content_loc), 100) }}</p>
+                                    <p class="card-text">{{ Str::limit(html_entity_decode(strip_tags($item->content_loc)), 100) }}</p>
                                     <a href="{{ route('news.show', $item->slug) }}" class="card-link">{{ __('Read More') }}</a>
                                 </div>
                             </div>

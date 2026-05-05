@@ -56,43 +56,51 @@
 <!-- Upcoming Fairs -->
 <section>
     <div class="wrap">
-        <div class="section-head">
             <div>
-                <div class="eyebrow">{{ __('Portfolio') }}</div>
                 <h2 class="section-title">{{ __('Upcoming') }} <em>{{ __('Exhibitions') }}</em></h2>
             </div>
-            <p class="section-desc">{{ __('Discover our curated selection of industry-leading events scheduled for the upcoming season.') }}</p>
-        </div>
+            <p class="section-desc">{{ __('Explore our global portfolio of industry-leading events and exhibitions planned for the upcoming season.') }}</p>
         
         <div class="grid-3">
             @php
                 $upcomingFairs = \App\Models\Fair::where('is_featured', true)->orderBy('start_date', 'asc')->get();
             @endphp
             @foreach($upcomingFairs as $fair)
-            <div class="card">
-                <div class="card-img" style="position: relative; overflow: hidden;">
+            <div class="card" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="card-img" style="position: relative; overflow: hidden; height: 220px; flex-shrink: 0;">
                     @if($fair->video)
-                        <video autoplay muted loop playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 250px; object-fit: cover; display: block;">
+                        <video autoplay muted loop playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                             <source src="{{ asset('storage/' . $fair->video) }}" type="video/mp4">
                         </video>
                     @elseif($fair->image)
-                        <img src="{{ asset('storage/' . $fair->image) }}" alt="{{ $fair->name }}" style="width: 100%; height: 250px; object-fit: cover;">
+                        <img src="{{ asset('storage/' . $fair->image) }}" alt="{{ $fair->name }}" style="width: 100%; height: 100%; object-fit: cover;">
                     @else
-                        <svg viewBox="0 0 400 250" fill="#f0ede8"><rect width="400" height="250" fill="var(--brand)" fill-opacity="0.05"/><text x="50%" y="50%" text-anchor="middle" fill="var(--brand)" font-size="14" font-weight="700">{{ __('EVENT IMAGE') }}</text></svg>
+                        <svg viewBox="0 0 400 220" fill="#f0ede8"><rect width="400" height="220" fill="var(--brand)" fill-opacity="0.05"/><text x="50%" y="50%" text-anchor="middle" fill="var(--brand)" font-size="14" font-weight="700">{{ __('EVENT IMAGE') }}</text></svg>
                     @endif
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title">{{ $fair->name_loc }}</h3>
-                    <p class="card-text">{{ Str::limit(strip_tags($fair->description_loc), 100) }}</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--line); margin-top: 20px;">
-                        <div style="font-weight: 800; font-size: 12px; color: var(--muted);">
+                <div class="card-body" style="flex: 1; display: flex; flex-direction: column; padding: 24px;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px;">
+                        @if($fair->logo)
+                            <div style="width: 70px; height: 70px; flex-shrink: 0; background: #fff; border-radius: 12px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; padding: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                                <img src="{{ asset('storage/' . $fair->logo) }}" alt="Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                            </div>
+                        @endif
+                        <h3 class="card-title" style="margin: 0; font-size: 20px; line-height: 1.3; font-weight: 800;">{{ $fair->name_loc }}</h3>
+                    </div>
+                    
+                    <p class="card-text" style="font-size: 14px; line-height: 1.6; color: var(--muted); margin-bottom: 24px;">
+                        {{ Str::limit(html_entity_decode(strip_tags($fair->description_loc)), 90) }}
+                    </p>
+
+                    <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid var(--line-strong);">
+                        <div style="font-weight: 800; font-size: 11px; color: var(--brand); text-transform: uppercase; letter-spacing: 0.5px;">
                             @if($fair->start_date->format('m') === $fair->end_date->format('m'))
                                 {{ $fair->start_date->format('d') }}-{{ $fair->end_date->format('d') }} {{ __($fair->start_date->format('M')) }}
                             @else
                                 {{ $fair->start_date->format('d') }} {{ __($fair->start_date->format('M')) }} - {{ $fair->end_date->format('d') }} {{ __($fair->end_date->format('M')) }}
                             @endif
                         </div>
-                        <a href="{{ route('fairs.show', $fair->slug) }}" class="card-link" style="margin: 0;">{{ __('View Event Details') }}</a>
+                        <a href="{{ route('fairs.show', $fair->slug) }}" class="card-link" style="margin: 0; font-size: 13px; font-weight: 700;">{{ __('Details') }}</a>
                     </div>
                 </div>
             </div>

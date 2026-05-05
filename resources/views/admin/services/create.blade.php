@@ -13,7 +13,7 @@
 
         <div style="margin-bottom: 24px;">
             <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Açıklama</label>
-            <textarea name="description" rows="4" style="width: 100%; background: #0d1117; border: 1px solid var(--admin-border); padding: 12px 16px; border-radius: 12px; color: #fff; font-family: inherit; outline: none; resize: vertical;"></textarea>
+            <textarea name="description" rows="4" class="admin-input editor"></textarea>
         </div>
 
         <div style="display: flex; gap: 16px;">

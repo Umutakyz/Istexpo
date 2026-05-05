@@ -30,7 +30,7 @@
 
             <div>
                 <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Haber İçeriği</label>
-                <textarea name="content" rows="10" required style="width: 100%; background: #0d1117; border: 1px solid var(--admin-border); padding: 12px 16px; border-radius: 12px; color: #fff; font-family: inherit; outline: none; resize: vertical;"></textarea>
+                <textarea name="content" rows="10" required class="admin-input editor"></textarea>
             </div>
 
             <div style="display: flex; align-items: center; gap: 12px;">

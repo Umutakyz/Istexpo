@@ -27,6 +27,45 @@
                 <input type="file" name="video" class="admin-input">
             </div>
             <div style="grid-column: span 2;">
+                <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Diğer Resimler (Galeri)</label>
+                @if($fair->images)
+                    <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
+                        @foreach($fair->images as $img)
+                            <div class="gallery-item" style="position: relative; width: 80px; height: 80px; border: 1px solid var(--admin-border); border-radius: 8px; overflow: hidden; background: #fff; transition: all 0.3s;">
+                                <img src="{{ asset('storage/' . $img) }}" style="width: 100%; height: 100%; object-fit: contain;">
+                                <label style="position: absolute; top: 0; right: 0; background: rgba(0,0,0,0.5); color: #fff; padding: 2px 5px; cursor: pointer; border-bottom-left-radius: 8px; font-size: 10px; transition: all 0.3s;" onclick="toggleDelete(this)">
+                                    <input type="checkbox" name="remove_images[]" value="{{ $img }}" style="display: none;">
+                                    <span>Sil</span>
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <script>
+                        function toggleDelete(label) {
+                            const container = label.closest('.gallery-item');
+                            const checkbox = label.querySelector('input');
+                            const span = label.querySelector('span');
+                            setTimeout(() => {
+                                if (checkbox.checked) {
+                                    container.style.opacity = '0.3';
+                                    container.style.border = '2px solid red';
+                                    label.style.background = 'red';
+                                    span.innerText = 'SİLİNECEK';
+                                } else {
+                                    container.style.opacity = '1';
+                                    container.style.border = '1px solid var(--admin-border)';
+                                    label.style.background = 'rgba(0,0,0,0.5)';
+                                    span.innerText = 'Sil';
+                                }
+                            }, 50);
+                        }
+                    </script>
+                    <p style="font-size: 11px; color: var(--admin-text-muted); margin-bottom: 12px;">* Silmek istediğiniz resimlerin üzerindeki 'Sil' butonuna tıklayın.</p>
+                @endif
+                <input type="file" name="images[]" multiple class="admin-input">
+                <p style="font-size: 11px; color: var(--admin-text-muted); margin-top: 5px;">Yeni resimler yüklerseniz mevcut listeye eklenir.</p>
+            </div>
+            <div style="grid-column: span 2;">
                 <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Fuar Adı</label>
                 <input type="text" name="name" value="{{ $fair->name }}" required class="admin-input">
             </div>
@@ -64,7 +103,7 @@
 
             <div style="grid-column: span 2;">
                 <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Açıklama</label>
-                <textarea name="description" rows="5" class="admin-input" style="height: auto; resize: vertical;">{{ $fair->description }}</textarea>
+                <textarea name="description" rows="5" class="admin-input editor">{{ $fair->description }}</textarea>
             </div>
 
             <!-- Extra Detail Fields -->
@@ -109,12 +148,12 @@
 
             <div>
                 <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Web Sitesi</label>
-                <input type="url" name="website" value="{{ $fair->website }}" class="admin-input" placeholder="https://...">
+                <input type="text" name="website" value="{{ $fair->website }}" class="admin-input" placeholder="https://...">
             </div>
 
             <div style="grid-column: span 2;">
-                <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Katılımcı Profili (HTML/Liste)</label>
-                <textarea name="exhibitor_profile" rows="5" class="admin-input" style="height: auto; resize: vertical;">{{ $fair->exhibitor_profile }}</textarea>
+                <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Katılımcı Profili (Liste)</label>
+                <textarea name="exhibitor_profile" rows="5" class="admin-input editor">{{ $fair->exhibitor_profile }}</textarea>
             </div>
         </div>
 

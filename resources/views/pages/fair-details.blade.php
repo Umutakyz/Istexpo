@@ -30,16 +30,40 @@
                 </p>
             </div>
 
-            {{-- Middle Part: Cover Image or Video --}}
-            <div style="flex: 1.5; min-width: 300px; min-height: 280px; background: #000; position: relative;">
+            {{-- Middle Part: Cover Image, Video, or Gallery --}}
+            <div style="flex: 1.5; min-width: 300px; background: #fff; padding: 20px; display: flex; flex-direction: column; gap: 15px; border-left: 1px solid var(--line); border-right: 1px solid var(--line);">
                 @if($fair->video)
-                    <video controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; display: block;">
-                        <source src="{{ asset('storage/' . $fair->video) }}" type="video/mp4">
-                    </video>
-                @elseif($fair->image)
-                    <img src="{{ asset('storage/' . $fair->image) }}" alt="{{ $fair->name }}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;">
-                @else
-                    <div style="width: 100%; height: 100%; background: var(--line); display: grid; place-items: center;">
+                    <div style="width: 100%; height: 300px; background: #000; position: relative; border-radius: 4px; overflow: hidden;">
+                        <video controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <source src="{{ asset('storage/' . $fair->video) }}" type="video/mp4">
+                        </video>
+                    </div>
+                @endif
+
+                @php
+                    $allImages = [];
+                    if($fair->image) $allImages[] = $fair->image;
+                    if($fair->images) $allImages = array_unique(array_merge($allImages, $fair->images));
+                @endphp
+
+                @if(count($allImages) === 1)
+                    {{-- Single Image: Large and Centered --}}
+                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 250px;">
+                        <a href="{{ asset('storage/' . $allImages[0]) }}" target="_blank" style="display: block; width: 100%; height: 100%;">
+                            <img src="{{ asset('storage/' . $allImages[0]) }}" alt="{{ $fair->name }}" style="width: 100%; height: 100%; max-height: 350px; object-fit: contain;">
+                        </a>
+                    </div>
+                @elseif(count($allImages) > 1)
+                    {{-- Multiple Images: Gallery Grid --}}
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;">
+                        @foreach($allImages as $img)
+                            <a href="{{ asset('storage/' . $img) }}" target="_blank" style="display: block; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: #f8f9fa; height: 140px;">
+                                <img src="{{ asset('storage/' . $img) }}" alt="{{ $fair->name }}" style="width: 100%; height: 100%; object-fit: contain;">
+                            </a>
+                        @endforeach
+                    </div>
+                @elseif(!$fair->video)
+                    <div style="width: 100%; height: 280px; background: var(--line); display: grid; place-items: center; border-radius: 4px;">
                         <span style="color: var(--muted);">{{ __('No Image') }}</span>
                     </div>
                 @endif
@@ -51,7 +75,7 @@
                     @if($fair->subject)
                         <li style="position: relative; padding-left: 16px; margin-bottom: 8px;">
                             <span style="position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--ink); border-radius: 50%;"></span>
-                            <strong>{{ __('Fair Subject:') }}</strong> {{ $fair->subject }}
+                            <strong>{{ __('Fair Subject:') }}</strong> {{ html_entity_decode($fair->subject_loc) }}
                         </li>
                     @endif
                     <li style="position: relative; padding-left: 16px; margin-bottom: 8px;">
@@ -65,24 +89,24 @@
                     </li>
                     <li style="position: relative; padding-left: 16px; margin-bottom: 8px;">
                         <span style="position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--ink); border-radius: 50%;"></span>
-                        <strong>{{ __('City - Country:') }}</strong> {{ $fair->location }}
+                        <strong>{{ __('City - Country:') }}</strong> {{ html_entity_decode($fair->location_loc) }}
                     </li>
                     @if($fair->venue)
                         <li style="position: relative; padding-left: 16px; margin-bottom: 8px;">
                             <span style="position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--ink); border-radius: 50%;"></span>
-                            <strong>{{ __('Venue:') }}</strong> {{ $fair->venue }}
+                            <strong>{{ __('Venue:') }}</strong> {{ html_entity_decode($fair->venue_loc) }}
                         </li>
                     @endif
                     @if($fair->organizer)
                         <li style="position: relative; padding-left: 16px; margin-bottom: 8px;">
                             <span style="position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--ink); border-radius: 50%;"></span>
-                            <strong>{{ __('Organizer:') }}</strong> {{ $fair->organizer }}
+                            <strong>{{ __('Organizer:') }}</strong> {{ html_entity_decode($fair->organizer_loc) }}
                         </li>
                     @endif
                     @if($fair->edition)
                         <li style="position: relative; padding-left: 16px; margin-bottom: 8px;">
                             <span style="position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--ink); border-radius: 50%;"></span>
-                            <strong>{{ __('Edition:') }}</strong> {{ $fair->edition }}
+                            <strong>{{ __('Edition:') }}</strong> {{ html_entity_decode($fair->edition_loc) }}
                         </li>
                     @endif
                     @if($fair->grant_amount)
@@ -102,6 +126,7 @@
         </div>
 
         {{-- Bottom Section: Description & Profile --}}
+        {{-- Bottom Section: Description & Profile --}}
         <div class="grid-sidebar">
             {{-- Main Content --}}
             <div style="background: #fff; padding: 48px; border-radius: 4px; box-shadow: 0 15px 40px rgba(0,0,0,0.04); border-bottom: 4px solid var(--brand);">
@@ -120,7 +145,7 @@
                 
                 @if($fair->profile_loc)
                     <div style="font-size: 15px; color: #555; line-height: 1.7; margin-bottom: 32px;" class="fair-exhibitor-profile">
-                        {!! preg_replace('/<ul>/', '<ul style="list-style: none; padding: 0; margin: 0;">', preg_replace('/<li>/', '<li style="position: relative; padding-left: 16px; margin-bottom: 12px;"><span style="position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--yellow); border-radius: 50%;"></span>', $fair->profile_loc)) !!}
+                        {!! $fair->profile_loc !!}
                     </div>
                 @else
                     <p style="font-size: 14px; color: var(--muted); margin-bottom: 32px;">{{ __('No exhibitor profile available.') }}</p>
@@ -137,6 +162,24 @@
                 </div>
             </div>
         </div>
+        <script>
+            // Force autoplay for mobile (iOS requires user interaction in some cases)
+            document.addEventListener('DOMContentLoaded', function() {
+                var videos = document.querySelectorAll('video[autoplay]');
+                videos.forEach(function(v) {
+                    v.muted = true;
+                    var p = v.play();
+                    if (p !== undefined) {
+                        p.catch(function() {
+                            // Retry on first touch
+                            document.addEventListener('touchstart', function() {
+                                v.play();
+                            }, { once: true });
+                        });
+                    }
+                });
+            });
+        </script>
     </div>
 </section>
 @endsection

@@ -35,6 +35,26 @@ foreach ($fairs as $fair) {
         $fair->exhibitor_profile_en = $tr->translate($fair->exhibitor_profile);
         $updated = true;
     }
+    if (empty($fair->subject_en) && !empty($fair->subject)) {
+        $fair->subject_en = $tr->translate($fair->subject);
+        $updated = true;
+    }
+    if (empty($fair->location_en) && !empty($fair->location)) {
+        $fair->location_en = $tr->translate($fair->location);
+        $updated = true;
+    }
+    if (empty($fair->venue_en) && !empty($fair->venue)) {
+        $fair->venue_en = $tr->translate($fair->venue);
+        $updated = true;
+    }
+    if (empty($fair->organizer_en) && !empty($fair->organizer)) {
+        $fair->organizer_en = $tr->translate($fair->organizer);
+        $updated = true;
+    }
+    if (empty($fair->edition_en) && !empty($fair->edition)) {
+        $fair->edition_en = $tr->translate($fair->edition);
+        $updated = true;
+    }
     if ($updated) {
         $fair->save();
         echo "Translated Fair: {$fair->name}\n";

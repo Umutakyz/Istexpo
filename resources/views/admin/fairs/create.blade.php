@@ -16,6 +16,10 @@
                 <input type="file" name="video" class="admin-input">
             </div>
             <div style="grid-column: span 2;">
+                <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Diğer Resimler (Galeri)</label>
+                <input type="file" name="images[]" multiple class="admin-input">
+            </div>
+            <div style="grid-column: span 2;">
                 <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Fuar Adı</label>
                 <input type="text" name="name" required class="admin-input">
             </div>
@@ -53,7 +57,7 @@
 
             <div style="grid-column: span 2;">
                 <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Açıklama</label>
-                <textarea name="description" rows="5" class="admin-input" style="height: auto; resize: vertical;"></textarea>
+                <textarea name="description" rows="5" class="admin-input editor"></textarea>
             </div>
 
             <!-- Extra Detail Fields -->
@@ -93,12 +97,12 @@
 
             <div>
                 <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Web Sitesi</label>
-                <input type="url" name="website" class="admin-input" placeholder="https://...">
+                <input type="text" name="website" class="admin-input" placeholder="https://...">
             </div>
 
             <div style="grid-column: span 2;">
-                <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Katılımcı Profili (HTML/Liste)</label>
-                <textarea name="exhibitor_profile" rows="5" class="admin-input" style="height: auto; resize: vertical;"></textarea>
+                <label style="display: block; font-size: 13px; font-weight: 700; color: var(--admin-text-muted); margin-bottom: 8px;">Katılımcı Profili (Liste)</label>
+                <textarea name="exhibitor_profile" rows="5" class="admin-input editor"></textarea>
             </div>
         </div>
 

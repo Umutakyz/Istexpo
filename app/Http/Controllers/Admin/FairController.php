@@ -42,6 +42,7 @@ class FairController extends Controller
             'end_date' => 'required|date|after_or_equal:start_date',
             'location' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'video' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'subject' => 'nullable|string|max:255',
@@ -54,11 +55,21 @@ class FairController extends Controller
         ]);
 
         $data = $request->all();
-        $data['slug'] = Str::slug($request->name);
+        $slug = Str::slug($request->name);
+        $count = Fair::where('slug', 'LIKE', "{$slug}%")->count();
+        $data['slug'] = $count > 0 ? "{$slug}-" . ($count + 1) : $slug;
         $data['is_featured'] = $request->has('is_featured');
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('fairs', 'public');
+        }
+
+        if ($request->hasFile('images')) {
+            $images = [];
+            foreach ($request->file('images') as $file) {
+                $images[] = $file->store('fairs', 'public');
+            }
+            $data['images'] = $images;
         }
 
         if ($request->hasFile('logo')) {
@@ -100,13 +111,44 @@ class FairController extends Controller
         ]);
 
         $data = $request->all();
-        $data['slug'] = Str::slug($request->name);
         $data['is_featured'] = $request->has('is_featured');
+
+        if ($fair->name !== $request->name) {
+            $slug = Str::slug($request->name);
+            $count = Fair::where('slug', 'LIKE', "{$slug}%")->where('id', '!=', $fair->id)->count();
+            $data['slug'] = $count > 0 ? "{$slug}-" . ($count + 1) : $slug;
+        } else {
+            unset($data['slug']);
+        }
 
         if ($request->hasFile('image')) {
             if ($fair->image) Storage::disk('public')->delete($fair->image);
             $data['image'] = $request->file('image')->store('fairs', 'public');
         }
+
+        $currentImages = $fair->images ?? [];
+
+        // Remove selected images
+        if ($request->has('remove_images')) {
+            foreach ($request->remove_images as $imgToRemove) {
+                if (Storage::disk('public')->exists($imgToRemove)) {
+                    Storage::disk('public')->delete($imgToRemove);
+                }
+                $currentImages = array_filter($currentImages, function($img) use ($imgToRemove) {
+                    return $img !== $imgToRemove;
+                });
+            }
+            $currentImages = array_values($currentImages); // Reset keys
+        }
+
+        // Add new images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $currentImages[] = $file->store('fairs', 'public');
+            }
+        }
+
+        $data['images'] = $currentImages;
 
         if ($request->hasFile('logo')) {
             if ($fair->logo) Storage::disk('public')->delete($fair->logo);

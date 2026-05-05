@@ -34,7 +34,7 @@
                         {{ $item->created_at->format('d') }} {{ __($item->created_at->format('M')) }} {{ $item->created_at->format('Y') }}
                     </div>
                     <h3 class="card-title" style="font-size: 18px; line-height: 1.4;">{{ $item->title_loc }}</h3>
-                    <p class="card-text">{{ Str::limit($item->summary_loc ?: strip_tags($item->content_loc), 120) }}</p>
+                    <p class="card-text">{{ Str::limit(html_entity_decode(strip_tags($item->summary_loc ?: $item->content_loc)), 120) }}</p>
                     <a href="{{ route('news.show', $item->slug) }}" class="card-link">{{ __('Read More') }} →</a>
                 </div>
             </div>

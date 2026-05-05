@@ -713,3 +713,32 @@ section { padding: 140px 0; }
         min-height: 400px;
     }
 }
+
+/* ============ FAIR EXHIBITOR PROFILE ============ */
+.fair-exhibitor-profile ul, .fair-exhibitor-profile ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.fair-exhibitor-profile li {
+    position: relative;
+    padding-left: 16px;
+    margin-bottom: 8px;
+}
+.fair-exhibitor-profile li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 4px;
+    height: 4px;
+    background: var(--yellow);
+    border-radius: 50%;
+}
+.fair-exhibitor-profile h3, .fair-exhibitor-profile h4, .fair-exhibitor-profile h5 {
+    color: var(--ink);
+    margin-top: 24px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 600;
+}

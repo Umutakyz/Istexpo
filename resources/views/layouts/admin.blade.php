@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/tr.js"></script>
+    {{-- CKEditor --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
     <style>
         :root {
             --admin-bg: #001829;             /* Derin lacivert arka plan */
@@ -200,6 +202,34 @@
             border: 1px solid var(--admin-border) !important;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
         }
+
+        /* CKEditor Dark Theme */
+        .ck-editor__editable_inline {
+            min-height: 200px;
+            background-color: #0d1117 !important;
+            color: #fff !important;
+            border: 1px solid var(--admin-border) !important;
+        }
+        .ck.ck-editor__main>.ck-editor__editable {
+            background-color: #0d1117 !important;
+        }
+        .ck.ck-toolbar {
+            background-color: #161b22 !important;
+            border: 1px solid var(--admin-border) !important;
+        }
+        .ck.ck-toolbar__items {
+            background-color: #161b22 !important;
+        }
+        .ck.ck-button {
+            color: #fff !important;
+        }
+        .ck.ck-button:hover {
+            background-color: #21262d !important;
+        }
+        .ck.ck-button.ck-on {
+            background-color: var(--admin-accent) !important;
+            color: var(--admin-navy) !important;
+        }
     </style>
 </head>
 <body>
@@ -251,6 +281,17 @@
                 altInputClass: 'admin-input',
                 disableMobile: "true"
             });
+        });
+
+        // Initialize CKEditor
+        document.querySelectorAll('.editor').forEach(el => {
+            ClassicEditor
+                .create(el, {
+                    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo'],
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         });
     </script>
 </body>

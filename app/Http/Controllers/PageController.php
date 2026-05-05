@@ -20,8 +20,8 @@ class PageController extends Controller
     {
         $query = Fair::latest();
         
-        $internationalFairs = (clone $query)->where('type', 'international')->paginate(12, ['*'], 'int_page');
-        $pastFairs = (clone $query)->where('type', 'past')->paginate(12, ['*'], 'past_page');
+        $internationalFairs = (clone $query)->where('type', 'international')->paginate(12, ['*'], 'uluslararasi_sayfa');
+        $pastFairs = (clone $query)->where('type', 'past')->paginate(12, ['*'], 'gecmis_sayfa');
 
         return view('pages.fairs', compact('internationalFairs', 'pastFairs'));
     }
